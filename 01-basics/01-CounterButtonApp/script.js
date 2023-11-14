@@ -1,6 +1,6 @@
-import { createApp, defineComponent } from './vendor/vue.esm-browser.js';
+import { createApp } from './vendor/vue.esm-browser.js';
 
-const App = defineComponent({
+const app = createApp({
   name: 'App',
   data() {
     return {
@@ -9,5 +9,4 @@ const App = defineComponent({
   },
 });
 
-const app = createApp(App);
 const vm = app.mount('#app');
