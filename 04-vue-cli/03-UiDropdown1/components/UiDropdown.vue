@@ -1,18 +1,42 @@
 <template>
-  <div class="dropdown dropdown_opened">
-    <button type="button" class="dropdown__toggle dropdown__toggle_icon">
-      <UiIcon icon="tv" class="dropdown__icon" />
-      <span>Title</span>
+  <select class="select_hidden" :value="modelValue" @change="changeSelectValue">
+    <option 
+      v-for="option in options"
+      :key="option.value"
+      :value="option.value"
+    > {{ option.text }} </option>
+  </select>
+  <div class="dropdown" :class="{'dropdown_opened': isOpen}">
+    <button 
+      type="button" 
+      class="dropdown__toggle" 
+      :class="{'dropdown__toggle_icon': optionsHasIcon}" 
+      @click="toggleClick"
+    >
+      <UiIcon 
+        v-if="selectedOption?.icon" 
+        :icon="selectedOption?.icon" 
+        class="dropdown__icon" 
+      />
+      <span> {{ selectedOption?.text ?? title }}</span>
     </button>
 
-    <div class="dropdown__menu" role="listbox">
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <UiIcon icon="tv" class="dropdown__icon" />
-        Option 1
-      </button>
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <UiIcon icon="tv" class="dropdown__icon" />
-        Option 2
+    <div v-show="isOpen" class="dropdown__menu" role="listbox">
+      <button 
+        v-for="option in options" 
+        :key="option.value" 
+        class="dropdown__item" 
+        :class="{'dropdown__item_icon': optionsHasIcon}" 
+        role="option" 
+        type="button"
+        @click="selectNewValue(option.value)"
+      >
+        <UiIcon 
+          v-if="option?.icon" 
+          :icon="option?.icon" 
+          class="dropdown__icon"
+        />
+        {{ option.text }}
       </button>
     </div>
   </div>
@@ -25,6 +49,53 @@ export default {
   name: 'UiDropdown',
 
   components: { UiIcon },
+  emits: ['update:modelValue'],
+  props: {
+    options: {
+      type: Array,
+      required: true,
+    },
+    modelValue: {
+      type: String,
+    },
+    title: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      isOpen: false,
+    }
+  },
+  methods: {
+    toggleClick() {
+      if (this.isOpen === true) {
+        this.isOpen = false;
+      } else {
+        this.isOpen = true;
+      }
+    },
+    selectNewValue(value) {
+      this.isOpen = false;
+      this.$emit('update:modelValue', value);
+    },
+    changeSelectValue(event) {
+      this.$emit('update:modelValue', event.target.value);
+    }
+  },
+  computed: {
+    optionsHasIcon() {
+      return this.options.some(option => {
+        return 'icon' in option;
+      });
+    },
+    selectedOption() {
+      return this.options.find(option => {
+        return option.value === this.modelValue;
+      });
+    }
+  }
 };
 </script>
 
@@ -137,5 +208,8 @@ export default {
   top: 50%;
   left: 16px;
   transform: translate(0, -50%);
+}
+.select_hidden {
+  display: none;
 }
 </style>
