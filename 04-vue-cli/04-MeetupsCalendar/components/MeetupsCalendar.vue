@@ -52,9 +52,9 @@ export default {
   methods: {
     changeMonth(nextMonth) {
       if (nextMonth === true) {
-        this.date = new Date(this.date.setMonth(this.date.getMonth() + 1));
+        this.date = new Date(this.date.setMonth(this.date.getMonth() + 1, 1));
       } else {
-        this.date = new Date(this.date.setMonth(this.date.getMonth() - 1));
+        this.date = new Date(this.date.setMonth(this.date.getMonth() - 1, 1));
       }
     },
     getInactiveDays(arMonthDays, dayKey, period) {
