@@ -35,6 +35,7 @@ export default {
     UiFormGroup,
     UiContainer,
   },
+
   props: {
     'query': {
       type: String,
