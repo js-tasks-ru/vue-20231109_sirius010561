@@ -45,6 +45,7 @@ const router = createRouter({
   ],
 });
 
+
 router.beforeEach(async (to) => {
   if (to.meta.requireGuest && isAuthenticated()) {
     return { name: 'index' };
