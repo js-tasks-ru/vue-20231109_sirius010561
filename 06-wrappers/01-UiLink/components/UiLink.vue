@@ -1,10 +1,20 @@
 <template>
-  <a class="link">Link!</a>
+  <component :is="tag">
+    <slot />
+  </component>
 </template>
 
 <script>
+import { RouterLink } from 'vue-router';
+
 export default {
   name: 'UiLink',
+  props: {
+    tag: {
+      type: [String, Object, Function],
+      default: RouterLink,
+    }
+  }
 };
 </script>
 
