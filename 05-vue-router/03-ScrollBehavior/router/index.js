@@ -2,7 +2,21 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 export const router = createRouter({
   history: createWebHistory('/05-vue-router/03-ScrollBehavior'),
-
+ 
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+    if (to.hash) {
+      return {
+        el: to.hash,
+      };
+    }
+    if (to.meta.saveScrollPosition && from.meta.saveScrollPosition) {
+      return false;
+    }
+    return { left: 0, top: 0 };
+  },
   routes: [
     {
       path: '/',
